@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <!--
+        作者：365375236@qq.com
+        时间：2017-03-08
+        描述：React核心库
+    -->
+    <script src="build/react.js" charset="UTF-8"></script>
+    <!--
+        描述：提供与DOM相关功能
+    -->
+    <script src="build/react-dom.js" charset="UTF-8"></script>
+    <!--
+        描述：将JSX语法转换成JS
+    -->
+    <script src="build/browser.min.js"></script>
+    <style>
+        .pStyle {
+            background-color: gray;
+            color: black;
+
+        }
+    </style>
+</head>
+<body>
+
+<!--
+    描述：react渲染的内容插入到这个DOM节点中
+-->
+<div id="container">
+
+</div>
+</body>
+
+<!--
+    描述：使用JSX的地方，要设置成text/babel,转换成浏览器可运行的代码
+-->
+<script type="text/babel">
+    /**
+     * ReactDOM.render() 用于将模版转换成HTML语言，渲染DOM，并插入指定的DOM节点
+     *  参数：
+     *  1.模版渲染内容（HTML形式）
+     *  2.这段模版需要插入的DOM节点
+     *  3.渲染后的回调
+     */
+    /*
+     ReactDOM.render(
+     <h1 >Hello</h1>,
+     document.getElementById("container")
+     );
+     ReactDOM.render(
+     React.createElement("h1", null, "sasasa"),
+     document.getElementById("container")
+     );
+     var text = "1111";
+     ReactDOM.render(
+     <h1>{text}</h1>,
+     document.getElementById("container")
+     );
+     */
+    /**
+     *  创建组件类
+     *  1.创建的组件类以大写字母开头，驼峰命名法
+     *  2.React.createClass方法创建
+     *  3.每个组件都必须实现自己的render方法，返回值：null、false、组件模板
+     *  4.组件类只包含一个顶层标签
+     */
+    var hStyle = {
+        backgroundColor: "green",
+        color: "red",
+        gravity: "center"
+    };
+
+    // props是组件自身的属性，负责传递消息，不要直接去修改props中属性的值
+    var WebName = React.createClass({
+        render: function () {
+            return <h1 >{this.props.wName} </h1>
+        }
+    });
+
+    // ...this.props可以将父组件的全部属性赋值给子组件
+    var WebShow = React.createClass({
+        render: function () {
+            return <a {...this.props}>{this.props.wUrl}</a>
+        }
+    });
+
+    var Message = React.createClass({
+        render: function () {
+            return <div style={{backgroundColor: "yellow", paddingLeft: 20, paddingRight: 30}}>
+                <WebName style={hStyle} wName={this.props.webName}/>
+                <WebShow wUrl={this.props.webName} href={this.props.webUrl}/>
+            </div>
+        }
+    });
+
+    //this.props.children从父组件获取到需要展示的列表项内容
+    //使用React.Children.map方法，返回值：数组对象。
+    var ListComponent = React.createClass({
+        render: function () {
+            return <ul>
+                {
+                    React.Children.map(this.props.children, function (child) {
+                        return <li>{child}</li>
+                    })
+                }
+            </ul>
+        }
+    });
+
+    ReactDOM.render(
+            <Message webName="aaa" webUrl="http://www.baidu.com"/>,
+        document.getElementById("container")
+    );
+
+    ReactDOM.render(
+            <ListComponent >
+                <Message webName="bbb" webUrl="http://www.baidu.com"/>
+            </ListComponent>,
+        document.getElementById("container")
+    );
+</script>
+</html>
